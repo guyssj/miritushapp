@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Text, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native'
 import { color, themesC, useTheme } from '../theme';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../api';
@@ -7,35 +7,35 @@ import { Calendar } from 'react-native-big-calendar'
 import { Dimensions, SafeAreaView, StatusBar } from 'react-native'
 import { Button } from '../components';
 import dayjs from 'dayjs'
-import 'dayjs/locale/he'
 import { CalendarEvents, CalendarHeader } from '../components/Calendar';
+import he from 'dayjs/locale/he'
+import { useQuery } from 'react-query'
+import { useDispatch, useSelector } from "react-redux";
+import { userSignInSet } from '../store/reducers/user';
 
-const GetEvents = async () => {
-    const eventsss = await api.calendar.getAll();
-    return newEvents = eventsss.map(item => {
-        return {
-            title: item.title,
-            start: new Date(item.start),
-            end: new Date(item.end),
-            color: item.customer.color
-        }
-    });
-}
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
     const [additionalEvents, setAdditionalEvents] = React.useState([])
     const [events, setEvents] = React.useState([])
-    const [date, setDate] = React.useState(new Date())
-
-    const [mode, setMode] = React.useState('custom')
-    useEffect(() => {
-        (async () => {
-            setEvents(await GetEvents())
-        })();
-    }, []);
-
+    const dispatch = useDispatch();
+    const [date, setDate] = React.useState(dayjs())
+    const { isLoading, isError, data, error, isFetching } = useQuery("events", () => api.calendar.getAll(), {
+        onSuccess: (data) => { setEvents(data ? data : []); },
+        onError: async (error) => {
+            error.status === 401 ? dispatch(userSignInSet(false)) : null;
+            await AsyncStorage.removeItem('accessToken')
+        }
+    })
+    const [mode, setMode] = React.useState('week')
     const evnetpress = (event) => {
         console.log(event)
+        navigation.navigate('Home', {
+            screen: 'Details',
+            params: {
+                screen: 'main',
+                params: { customer: event.customer, meta: event.meta, serviceType: event.serviceType }
+            }
+        })
     }
 
     const _onPrevDate = () => {
@@ -55,7 +55,8 @@ const HomeScreen = () => {
     }
 
     const _onNextDate = () => {
-        setDate(dayjs(date).add(7, 'day').toDate())
+        let dates = dayjs(date).add(7, 'day').toDate()
+        setDate(prev => dates)
     }
     const addEvent = React.useCallback(
         // (start) => {
@@ -65,6 +66,13 @@ const HomeScreen = () => {
         // },
         // [additionalEvents, setAdditionalEvents],
     )
+
+    if (isLoading) {
+        return (<View style={{ flex: 1, justifyContent: 'center' }}><ActivityIndicator /></View>)
+    }
+    if (isError) {
+        return (<View style={{ flex: 1, justifyContent: 'center' }}><ActivityIndicator /><Text>Error</Text></View>)
+    }
     return (
         <SafeAreaView style={{ backgroundColor: color.palette.offWhiteBack, flex: 1 }}>
             <View style={{ margin: 15 }}>
@@ -74,7 +82,7 @@ const HomeScreen = () => {
                 }}>
                     <Button style={{ backgroundColor: color.palette.blue, width: 50, margin: 5 }} title="<" onPress={_onNextDate} />
                     <View>
-                        <Text style={{ fontSize: 25, color: color.whiteText }}>{dayjs(date).format('MMMM YYYY')}</Text>
+                        <Text style={{ fontSize: 25, color: color.whiteText }}>{dayjs(date).locale(he).format('MMMM YYYY')}</Text>
                     </View>
                     <Button style={{ backgroundColor: color.palette.blue, width: 50, margin: 5 }} title=">" onPress={_onPrevDate} />
                 </View>
@@ -85,21 +93,20 @@ const HomeScreen = () => {
                     events={[...events, ...additionalEvents]}
                     onPressCell={addEvent}
                     hourRowHeight={80}
-                    headerContentStyle={{
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center',
+                    locale={he}
+                    hourStyle={{
+                        color: themesC.default.palette.primary.main,
+                        fontWeight: '700',
+                        borderRadius: 10
                     }}
-                    weekDayHeaderHighlightColor={"#000"}
-                    locale={"he"}
                     swipeEnabled={false}
                     scrollOffsetMinutes={620}
-                    showAllDayEventCell={false}
                     renderEvent={CalendarEvents}
                     renderHeader={CalendarHeader}
                     onPressEvent={evnetpress}
                     sortedMonthView={true}
                     mode={mode}
+                    overlapOffset={'6'}
                     theme={themesC['default']}
                 />
             </View>

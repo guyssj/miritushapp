@@ -20,11 +20,11 @@ const CalendarEvents = (
                     borderRightWidth: 6,
                     borderStyle: 'solid',
                     borderRadius: 6,
-                    alignItems: 'center',
-                    justifyContent: 'center',
+                    alignItems: 'flex-start',
+                    justifyContent: 'flex-start',
                 }
             ]}>
-            <Text style={{ color: event.color ? shadeColor(event.color, -50) : theme.palette.purpule.main }}>{event.title}</Text>
+            <Text style={{ fontSize: 12, fontWeight: '700', textAlign: 'right', color: event.color ? shadeColor(event.color, -50) : theme.palette.purpule.main }}>{event.title}</Text>
         </TouchableOpacity>
     )
 }

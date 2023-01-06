@@ -3,7 +3,6 @@ import { isSameDate, isToday } from "../../shared/utilsFuncations";
 import { color, useTheme } from "../../theme"
 
 const theme = useTheme();
-console.log("render")
 const calendarHeader = (props) => {
     const { dateRange, activeDate, cellHeight } = props
 
@@ -11,7 +10,6 @@ const calendarHeader = (props) => {
         <View style={styles.headerContainer}>
             <View style={{ zIndex: 10, width: 50 }} />
             {dateRange.map((date) => {
-                console.log(date);
                 const shouldHighlight = activeDate ? isSameDate(date, activeDate) : isToday(date)
                 return (
                     <TouchableOpacity key={date.toString()} style={{ flex: 1, paddingTop: 2 }}>

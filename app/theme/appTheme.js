@@ -2,10 +2,11 @@
 const appTheme = {
     palette: {
         primary: {
-            main: "#07BFE1",
+            main: "#665FF6",
             contrastText: "#fff",
-            dark: "#04859d",
-            light: "#38cbe7"
+            dark: "#4742ac",
+            light: "#847ff7",
+            200: "#F1EFFE"
         },
         secondary: {
             main: "#df734f",

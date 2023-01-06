@@ -14,6 +14,27 @@ export function isSameDate(date, activeDate) {
 
 }
 
+
+export function minToTime(value) {
+    let hours = Math.floor(value / 60);
+    let minutes = Math.floor((value - ((hours * 3600)) / 60));
+    //let seconds = Math.floor((value * 60) - (hours * 3600) - (minutes * 60));
+
+    // Appends 0 when unit is less than 10
+    if (hours < 10) {
+        var newH = "0" + hours;
+    } else {
+        newH = hours.toString();
+    }
+    if (minutes < 10) {
+        var newMin = "0" + minutes;
+    }
+    else {
+        newMin = minutes.toString();
+    }
+    return newH + ':' + newMin;
+}
+
 export function shadeColor(color, percent, transpert) {
 
     var R = parseInt(color.substring(1, 3), 16);
