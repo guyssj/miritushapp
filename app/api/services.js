@@ -10,7 +10,7 @@ const services = {
             return response.data;
         } catch (error) {
 
-            console.log('error: ', error.toJSON())
+            throw error;
         }
     }
 }

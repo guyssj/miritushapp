@@ -15,7 +15,7 @@ const users = {
             const response = await api.post(url, payload);
             return response.data;
         } catch (error) {
-            console.log('error: ', error.toJSON())
+            throw error;
         }
     }
 }

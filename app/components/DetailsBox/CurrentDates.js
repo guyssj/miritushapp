@@ -8,7 +8,7 @@ import he from 'dayjs/locale/he'
 
 const CurrentDates = ({ book, theme, onReschedule }) => {
     return (
-        <View style={{ padding: 30, borderRadius: 25, borderColor: '#E9E9F0', borderWidth: 1.5, width: '95%', height: '29%' }}>
+        <View style={{ padding: 30, borderRadius: 25, borderColor: '#E9E9F0', borderWidth: 1.5, width: '95%' }}>
             <View style={{ flexDirection: 'row-reverse', alignItems: 'center' }}>
                 <View style={{
                     marginStart: 15,
@@ -40,7 +40,7 @@ const CurrentDates = ({ book, theme, onReschedule }) => {
                 </Text>
             </View>
             <View style={{ width: '100%', marginTop: 10 }}>
-                <Button onPress={onReschedule} style={{ backgroundColor: theme.palette.primary[200] }} textStyle={{ color: theme.palette.primary.main, fontWeight: '700', fontSize: 20 }} title={'שינוי התור'} />
+                <Button onPress={onReschedule} style={{ backgroundColor: theme.palette.primary[50] }} textStyle={{ color: theme.palette.primary.main, fontWeight: '700', fontSize: 20 }} title={'שינוי התור'} />
             </View>
         </View>
     )

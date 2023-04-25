@@ -13,14 +13,20 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const LoginScreen = () => {
     const [userName, onUserNameChange] = useState("");
     const [password, onPasswordChange] = useState("");
+    const [loading, setLoading] = useState(false);
+
     const dispatch = useDispatch();
     const SignIn = async () => {
         //login with user name
-        const user = await api.users.login(userName, password);
+        setLoading(true)
+        const user = await api.users.login(userName, password).catch((error) => {
+            setLoading(false)
+        });
         //save the access_token in storage
         await AsyncStorage.setItem('accessToken', user.access_token)
         //update user was sgin in
-        dispatch(userSignInSet(true))
+        dispatch(userSignInSet(true));
+        setLoading(false)
     }
 
     return (
@@ -42,7 +48,7 @@ const LoginScreen = () => {
                     placeholder="Password" />
             </View>
             <View style={styles.loginButtonContainer}>
-                <Button title="Sign In" onPress={() => SignIn()} />
+                <Button title="Sign In" loading={loading} onPress={() => SignIn()} />
             </View>
         </View>
     )

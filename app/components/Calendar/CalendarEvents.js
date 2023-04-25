@@ -14,8 +14,7 @@ const CalendarEvents = (
             style={[
                 ...(touchableOpacityProps.style),
                 {
-                    backgroundColor: event.color ? shadeColor(event.color, 50, true) : theme.palette.purpule[100],
-                    borderColor: 'lightgrey',
+                    backgroundColor: event.color ? theme.palette.primary[50] : theme.palette.purpule[100],
                     borderRightColor: event.color ? event.color : theme.palette.purpule.main,
                     borderRightWidth: 6,
                     borderStyle: 'solid',
@@ -24,7 +23,7 @@ const CalendarEvents = (
                     justifyContent: 'flex-start',
                 }
             ]}>
-            <Text style={{ fontSize: 12, fontWeight: '700', textAlign: 'right', color: event.color ? shadeColor(event.color, -50) : theme.palette.purpule.main }}>{event.title}</Text>
+            <Text style={{ fontSize: 12, fontWeight: '700', textAlign: 'right', color: event.color ? shadeColor(event.color, 0) : theme.palette.purpule.main }}>{event.title}</Text>
         </TouchableOpacity>
     )
 }

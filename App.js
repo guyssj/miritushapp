@@ -8,7 +8,7 @@
 
 import React, { useState } from 'react';
 import type { Node } from 'react';
-import { AppState } from 'react-native'
+import { AppState, I18nManager } from 'react-native'
 import { focusManager } from 'react-query'
 import { Provider } from 'react-redux';
 import store from './app/store/store'
