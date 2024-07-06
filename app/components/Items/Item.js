@@ -39,7 +39,7 @@ const Item = ({ item, onPressRight, onPressLeft, ...props }) => {
                             height: 72,
                             justifyContent: 'center',
                             alignItems: 'center',
-                            borderColor: color.palette.blue
+                            borderColor: theme.palette.primary.main
                         }}>
                             <Image style={{ width: 64, height: 64 }} source={require('../../svgs/noimage.png')} />
 

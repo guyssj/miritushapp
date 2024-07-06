@@ -11,7 +11,7 @@ const DetailsStack = createNativeStackNavigator();
 
 const BottomSheetDetails = ({ route, navigation }) => {
     const bottomSheetRef = useRef(null);
-    const snapPoints = useMemo(() => [350, '90%'], []);
+    const snapPoints = useMemo(() => ['50%', '90%'], []);
 
     const handleSheetChanges = useCallback((index) => {
         console.log('handleSheetChanges', index);
@@ -27,10 +27,11 @@ const BottomSheetDetails = ({ route, navigation }) => {
                 snapPoints={snapPoints}
                 onChange={handleSheetChanges}
             >
-                <DetailsStack.Navigator screenOptions={{}}>
+                <DetailsStack.Navigator>
                     <DetailsStack.Screen
                         options={({ navigation }) => ({
                             title: "",
+                            headerShown: false,
                             headerLeft: () => <CloseButton onPress={() => navigation.goBack()} />,
                         })}
                         name="main"
@@ -50,13 +51,8 @@ const BottomSheetDetails = ({ route, navigation }) => {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        padding: 24,
-    },
-    contentContainer: {
-        flex: 1,
-        alignItems: 'center',
-    },
+        flex: 1
+    }
 });
 
 export default BottomSheetDetails;

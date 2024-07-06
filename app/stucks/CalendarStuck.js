@@ -22,7 +22,7 @@ const CalendarStuck = () => {
                     options={({ navigation }) => ({
                         title: "Details",
                         headerShown: false,
-                        presentation: 'transparentModal',
+                        presentation: 'containedTransparentModal',
                     })}
                     name="Details"
                     component={BottomSheetDetails} />

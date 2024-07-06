@@ -1,5 +1,5 @@
-import { Calendar } from '../../build'
-import React, { useCallback, useMemo, useRef } from 'react'
+import { Calendar } from 'react-native-big-calendar'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { ActivityIndicator, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { color, themesC } from '../theme'
@@ -8,14 +8,45 @@ import { addDays, format, addWeeks } from 'date-fns'
 import { CalendarEvents, CalendarHeader } from '../components/Calendar'
 import { he } from 'date-fns/locale';
 import he2 from 'dayjs/locale/he';
-import { useQuery } from 'react-query'
+import { useQuery, useQueryClient } from 'react-query'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import api from '../api';
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { userSignInSet } from '../store/reducers/user'
+import { HttpTransportType, HubConnectionBuilder, LogLevel } from '@microsoft/signalr'
 
 const CalendarScreen = ({ navigation }) => {
     const dispatch = useDispatch();
+    const [connection, setConnection] = useState();
+    const queryClient = useQueryClient();
+    const [events, setEvents] = useState([]);
+
+    useEffect(() => {
+        const newConnection = new HubConnectionBuilder()
+            .withUrl('https://localhost:7248/miritushHubs', {
+                skipNegotiation: true,
+                transport: HttpTransportType.WebSockets
+            })
+            .withAutomaticReconnect()
+            .configureLogging(LogLevel.Debug)
+            .build();
+        setConnection(newConnection)
+    }, []);
+
+    useEffect(() => {
+        if (connection) {
+            connection.start()
+                .then(res => {
+                    console.log('Connected!');
+
+                    connection.on('BookChange', (message) => {
+                        console.log(JSON.parse(message))
+                        queryClient.invalidateQueries('events')
+                    });
+                })
+                .catch(e => console.log('Connection failed: ', e));
+        }
+    }, [connection]);
     const evnetpress = (event) => {
         if (!event.customer) {
             console.log(event);
@@ -34,6 +65,9 @@ const CalendarScreen = ({ navigation }) => {
         onError: async (error) => {
             error.status === 401 ? dispatch(userSignInSet(false)) : null;
             await AsyncStorage.removeItem('accessToken')
+        },
+        onSuccess: async (d) => {
+            setEvents(prv => d);
         }
     })
     const { isLoading: lockHourLoading, isError: lockHourIsError, data: LockHours, error: lockHourError, isFetching: lockHourFetching } = useQuery("lockHours", () => api.calendar.getAllLockHours(), {
@@ -77,7 +111,7 @@ const CalendarScreen = ({ navigation }) => {
         return (<View style={{ flex: 1, justifyContent: 'center' }}><ActivityIndicator /><Text>Error</Text></View>)
     }
     return (
-        <SafeAreaView style={{ backgroundColor: color.palette.offWhiteBack, flex: 1, marginLeft: 5, marginRight: 5 }}>
+        <SafeAreaView style={{ backgroundColor: color.background, flex: 1, marginLeft: 5, marginRight: 5 }}>
             <View style={{
                 backgroundColor: color.palette.blue, borderTopEndRadius: 20,
                 borderTopStartRadius: 20, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'
@@ -91,7 +125,7 @@ const CalendarScreen = ({ navigation }) => {
             <Calendar
                 isRTL
                 date={date}
-                locale={he2}
+                locale={'he'}
                 hourRowHeight={90}
                 hourStyle={{
                     color: '#987554',
@@ -100,7 +134,8 @@ const CalendarScreen = ({ navigation }) => {
                 }}
                 weekStartsOn={0}
                 weekEndsOn={5}
-                calendarCellStyle={{ borderRightWidth: 1 }}
+                calendarCellTextStyle={{}}
+                calendarCellStyle={{ borderRightWidth: 1, borderLeftWidth: 0, borderColor: '#dddddd' }}
                 mode={"custom"}
                 onPressEvent={evnetpress}
                 sortedMonthView={false}
@@ -108,7 +143,7 @@ const CalendarScreen = ({ navigation }) => {
                 isEventOrderingEnabled={false}
                 renderEvent={CalendarEvents}
                 renderHeader={CalendarHeader}
-                events={[...data, ...LockHours, ...closeDays]}
+                events={[...events, ...LockHours, ...closeDays]}
                 theme={themesC['default']}
                 height={650} />
         </SafeAreaView>

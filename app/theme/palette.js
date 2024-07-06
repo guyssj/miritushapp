@@ -6,7 +6,7 @@ export const palette = {
   orangeDarker: "#EB9918",
   orangeLighter: "#F6EAE3",
   pinky: "#FA827E",
-  blue: "#45aaf2",
+  blue: "#3498db",
   blueDarker: "#0063CC",
   blueLighter: "#47A0FF",
   lightGrey: "#DCDBDC",

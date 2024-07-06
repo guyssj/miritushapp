@@ -1,10 +1,12 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { color } from '../theme';
 import { SafeAreaView } from 'react-native'
 import { useDispatch } from "react-redux";
 import { ExpandableCalendar, Agenda, AgendaList, CalendarProvider, WeekCalendar } from 'react-native-calendars';
 import { useCallback, useMemo } from 'react';
+import { setConnection } from '../store/reducers/signalrConnection';
+import { HubConnectionBuilder } from '@microsoft/signalr';
 
 
 const today = new Date().toISOString().split('T')[0];
@@ -12,97 +14,6 @@ const fastDate = getPastDate(3);
 const futureDates = getFutureDates(12);
 const dates = [fastDate, today].concat(futureDates);
 
-export const agendaItems = [
-    {
-        title: dates[0],
-        data: [{ hour: '12am', duration: '1h', title: 'First Yoga' }]
-    },
-    {
-        title: dates[1],
-        data: [
-            { hour: '4pm', duration: '1h', title: 'Pilates ABC' },
-            { hour: '5pm', duration: '1h', title: 'Vinyasa Yoga' }
-        ]
-    },
-    {
-        title: dates[2],
-        data: [
-            { hour: '1pm', duration: '1h', title: 'Ashtanga Yoga' },
-            { hour: '2pm', duration: '1h', title: 'Deep Stretches' },
-            { hour: '3pm', duration: '1h', title: 'Private Yoga' }
-        ]
-    },
-    {
-        title: dates[3],
-        data: [{ hour: '12am', duration: '1h', title: 'Ashtanga Yoga' }]
-    },
-    {
-        title: dates[4],
-        data: [{}]
-    },
-    {
-        title: dates[5],
-        data: [
-            { hour: '9pm', duration: '1h', title: 'Middle Yoga' },
-            { hour: '10pm', duration: '1h', title: 'Ashtanga' },
-            { hour: '11pm', duration: '1h', title: 'TRX' },
-            { hour: '12pm', duration: '1h', title: 'Running Group' }
-        ]
-    },
-    {
-        title: dates[6],
-        data: [
-            { hour: '12am', duration: '1h', title: 'Ashtanga Yoga' }
-        ]
-    },
-    {
-        title: dates[7],
-        data: [{}]
-    },
-    {
-        title: dates[8],
-        data: [
-            { hour: '9pm', duration: '1h', title: 'Pilates Reformer' },
-            { hour: '10pm', duration: '1h', title: 'Ashtanga' },
-            { hour: '11pm', duration: '1h', title: 'TRX' },
-            { hour: '12pm', duration: '1h', title: 'Running Group' }
-        ]
-    },
-    {
-        title: dates[9],
-        data: [
-            { hour: '1pm', duration: '1h', title: 'Ashtanga Yoga' },
-            { hour: '2pm', duration: '1h', title: 'Deep Stretches' },
-            { hour: '3pm', duration: '1h', title: 'Private Yoga' }
-        ]
-    },
-    {
-        title: dates[10],
-        data: [
-            { hour: '12am', duration: '1h', title: 'Last Yoga' }
-        ]
-    },
-    {
-        title: dates[11],
-        data: [
-            { hour: '1pm', duration: '1h', title: 'Ashtanga Yoga' },
-            { hour: '2pm', duration: '1h', title: 'Deep Stretches' },
-            { hour: '3pm', duration: '1h', title: 'Private Yoga' }
-        ]
-    },
-    {
-        title: dates[12],
-        data: [
-            { hour: '12am', duration: '1h', title: 'Last Yoga' }
-        ]
-    },
-    {
-        title: dates[13],
-        data: [
-            { hour: '12am', duration: '1h', title: 'Last Yoga' }
-        ]
-    }
-];
 function getFutureDates(numberOfDays) {
     const array = [];
     for (let index = 1; index <= numberOfDays; index++) {
@@ -125,25 +36,7 @@ function getPastDate(numberOfDays) {
 
 
 const HomeScreen = ({ navigation }) => {
-    const [additionalEvents, setAdditionalEvents] = React.useState([])
-    const [events, setEvents] = React.useState([])
     const dispatch = useDispatch();
-    const [date, setDate] = React.useState(new Date())
-    const [mode, setMode] = React.useState('custom')
-
-    // ref
-    const bottomSheetModalRef = useRef(null);
-
-    // variables
-    const snapPoints = useMemo(() => ['25%', '50%'], []);
-
-    // callbacks
-    const handlePresentModalPress = useCallback(() => {
-        bottomSheetModalRef.current?.present();
-    }, []);
-    const handleSheetChanges = useCallback((index) => {
-        console.log('handleSheetChanges', index);
-    }, []);
 
     const renderItem = (reservation, isFirst) => {
         const fontSize = isFirst ? 16 : 14;

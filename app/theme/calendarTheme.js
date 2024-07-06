@@ -4,7 +4,7 @@ export const themesC = {
     default: {
         palette: {
             primary: {
-                main: color.palette.blue,
+                main: '#3498db',
                 contrastText: color.whiteText,
             }
         },

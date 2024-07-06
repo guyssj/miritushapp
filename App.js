@@ -18,6 +18,7 @@ import {
   QueryClientProvider,
 } from 'react-query'
 
+
 focusManager.setEventListener(handleFocus => {
   const subscription = AppState.addEventListener('change', state => {
     handleFocus(state === 'active')

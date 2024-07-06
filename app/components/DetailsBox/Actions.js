@@ -1,4 +1,4 @@
-import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import CardPos from "../../svgs/icons/CardPos";
 import Trash from "../../svgs/icons/Trash";
 import ProfileRemove from "../../svgs/icons/ProfileRem";
@@ -26,21 +26,38 @@ const Actions = ({ book }) => {
     }
 
     return (
-        <View style={{ padding: 10, borderRadius: 20, borderColor: '#E9E9F0', borderWidth: 1.5, width: '96%', height: '30%', flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'center' }}>
-            <TouchableOpacity disabled={mutation.isLoading} onPress={() => cancelBookHandle()} style={{ alignItems: 'center' }}>
+
+        <View style={styles.actionButtonsContainer}>
+            <TouchableOpacity disabled={mutation.isLoading} onPress={() => cancelBookHandle()} style={styles.actionButton}>
                 {!mutation.isLoading && <Trash />}
                 {mutation.isLoading && <ActivityIndicator />}
-                <Text style={{ fontSize: 20, fontWeight: '400' }}>ביטול</Text>
+                <Text style={styles.buttonText}>ביטול</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={{ alignItems: 'center' }}>
+            <TouchableOpacity style={styles.actionButton}>
                 <ProfileRemove />
-                <Text style={{ fontSize: 20, fontWeight: '400' }}>לא מגיע/ה</Text>
+                <Text style={styles.buttonText}>לא מגיע/ה</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => TransactionHandle()} style={{ alignItems: 'center' }}>
+            <TouchableOpacity onPress={() => TransactionHandle()} style={styles.actionButton}>
                 <CardPos />
-                <Text style={{ fontSize: 20, fontWeight: '400' }}>רכישות</Text>
+                <Text style={styles.buttonText}>רכישות</Text>
             </TouchableOpacity>
         </View>
     )
 }
+
+const styles = StyleSheet.create({
+    actionButtonsContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 'auto',
+    },
+    actionButton: {
+        alignItems: 'center',
+    },
+    buttonText: {
+        color: '#555',
+        marginTop: 5,
+    }
+})
+
 export default Actions;

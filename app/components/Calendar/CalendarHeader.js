@@ -3,8 +3,8 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { isSameDate, isToday } from "../../shared/utilsFuncations";
 import { color, useTheme } from "../../theme"
 import dayjs from "dayjs";
-
-
+import isBetween from 'dayjs/plugin/isBetween'
+dayjs.extend(isBetween);
 const theme = useTheme();
 const calendarHeader = (props) => {
     const { dateRange, activeDate, cellHeight, allDayEvents, onPressEvent } = props

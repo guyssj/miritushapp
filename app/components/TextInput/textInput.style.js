@@ -6,10 +6,11 @@ const TextInputStyle = StyleSheet.create({
     textInputContainer: {
         flexDirection: 'row',
         padding: spacing[4],
-        backgroundColor: color.palette.lightGrey,
         borderRadius: spacing[2],
-        margin: spacing[1],
-        opacity: 0.8,
+        borderColor: '#ccc',
+        borderWidth: 1,
+        marginBottom: spacing[2],
+        // margin: spacing[0],
         overflow: "hidden",
         shadowColor: color.palette.black,
         shadowOffset: {
@@ -23,6 +24,9 @@ const TextInputStyle = StyleSheet.create({
     textInput: {
         fontSize: 16,
         color: color.text,
+    },
+    label: {
+        colr: '#555'
     }
 });
 

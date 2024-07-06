@@ -11,7 +11,7 @@ const CloseDayList = ({ onPressRight, onItemPress, items, ...props }) => {
             getItemCount={data => data.length | 0}
             getItem={(data, index) => data[index]}
             renderItem={({ item, index }) => <CloseDayItem onPressRight={() => onPressRight(item)} item={item} />}
-            ListEmptyComponent={() => <Text style={{ textAlign: 'center' }}>Customers is empty</Text>}
+            ListEmptyComponent={() => <Text style={{ textAlign: 'center' }}>No close days</Text>}
         />
     )
 }

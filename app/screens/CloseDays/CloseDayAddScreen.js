@@ -50,7 +50,7 @@ const CloseDayAddScreen = ({ navigation, route }) => {
     return (
 
         <KeyboardAvoidingView
-            keyboardVerticalOffset={130}
+            keyboardVerticalOffset={120}
             behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             style={styles.container}>
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -63,7 +63,7 @@ const CloseDayAddScreen = ({ navigation, route }) => {
                                 containerStyle={{
                                     justifyContent: 'space-between',
                                 }}
-                                rightIcon={<Icons name='calendar-today' color={color.palette.blue} style={styles.icon} size={30} />}
+                                rightIcon={<Icons name='calendar-today' color={theme.palette.primary.main} style={styles.icon} size={30} />}
                                 value={dateInput}
                                 onChangeText={setDate} />
                         </TouchableOpacity>
@@ -78,6 +78,7 @@ const CloseDayAddScreen = ({ navigation, route }) => {
                             onCancel={hideDatePicker}
                         />
                         <TextInput
+                            style={{ height: 30 }}
                             placeholder={"Notes"}
                             value={notes}
                             onChangeText={setNotes} />
@@ -92,24 +93,20 @@ const CloseDayAddScreen = ({ navigation, route }) => {
 }
 const styles = StyleSheet.create({
     loginScreenContainer: {
-        justifyContent: 'space-evenly',
+        justifyContent: 'flex-start',
         alignItems: 'center',
         flex: 1
     },
     container: {
-        backgroundColor: color.palette.offWhiteBack,
+        backgroundColor: color.background,
         flex: 1,
-    },
-    header: {
-        fontSize: 36
     },
     loginInputsContainer: {
         width: '90%',
-
     },
     btnContainer: {
         width: '90%',
-        marginTop: '30%'
+        marginTop: 'auto'
     },
 });
 export default CloseDayAddScreen
