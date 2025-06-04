@@ -1,6 +1,7 @@
 import React from 'react'
 import { ActivityIndicator, Text, View, VirtualizedList } from "react-native";
 import CloseDayItem from './CloseDayItem';
+import Typography from '../Typography/Typography';
 
 const CloseDayList = ({ onPressRight, onItemPress, items, ...props }) => {
     return (
@@ -11,7 +12,7 @@ const CloseDayList = ({ onPressRight, onItemPress, items, ...props }) => {
             getItemCount={data => data.length | 0}
             getItem={(data, index) => data[index]}
             renderItem={({ item, index }) => <CloseDayItem onPressRight={() => onPressRight(item)} item={item} />}
-            ListEmptyComponent={() => <Text style={{ textAlign: 'center' }}>No close days</Text>}
+            ListEmptyComponent={() => <Typography style={{ textAlign: 'center' }}>No close days</Typography>}
         />
     )
 }

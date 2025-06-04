@@ -1,21 +1,18 @@
 import { useCallback } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native"
 import { isSameDate, isToday } from "../../shared/utilsFuncations";
-import { color, useTheme } from "../../theme"
 import dayjs from "dayjs";
 import isBetween from 'dayjs/plugin/isBetween'
+import useStyles from "../../theme/useStyles";
 dayjs.extend(isBetween);
-const theme = useTheme();
 const calendarHeader = (props) => {
-    const { dateRange, activeDate, cellHeight, allDayEvents, onPressEvent } = props
+    const { dateRange, activeDate, cellHeight, allDayEvents, onPressEvent } = props;
 
+    const { colors, styles } = useStyles(createStyles);
+    const _onPressEvent = (event) => {
+        onPressEvent && onPressEvent(event);
+    };
 
-    const _onPressEvent = useCallback(
-        (event) => {
-            onPressEvent && onPressEvent(event)
-        },
-        [onPressEvent],
-    )
 
     return (
         <View style={styles.headerContainer}>
@@ -44,11 +41,11 @@ const calendarHeader = (props) => {
                                 }
                                 return (
                                     <TouchableOpacity
-                                        style={[{ backgroundColor: theme.palette.secondary.main, marginTop: 5, height: 20, width: '100%' }]}
+                                        style={[{ backgroundColor: colors.secondary, marginTop: 5, height: 20, width: '100%' }]}
                                         key={index}
                                         onPress={() => _onPressEvent(event)}>
                                         <Text
-                                            style={{ fontSize: 13, color: theme.palette.primary.contrastText, textAlign: 'center' }}>
+                                            style={{ fontSize: 13, color: colors.textPrimary, textAlign: 'center' }}>
                                             {event.title}
                                         </Text>
                                     </TouchableOpacity>
@@ -62,43 +59,44 @@ const calendarHeader = (props) => {
     )
 }
 
-const styles = StyleSheet.create({
-    headerContainer: {
-        flexDirection: 'row-reverse',
-        backgroundColor: theme.palette.primary.main,
-        borderBottomEndRadius: 20,
-        borderBottomStartRadius: 20,
-        shadowColor: theme.palette.primary.main,
-        shadowOffset: {
-            width: 0,
-            height: 4,
+const createStyles = (colors) =>
+    StyleSheet.create({
+        headerContainer: {
+            flexDirection: 'row',
+            backgroundColor: colors.primary.main,
+            borderBottomEndRadius: 20,
+            borderBottomStartRadius: 20,
+            shadowColor: colors.primary.main,
+            shadowOffset: {
+                width: 0,
+                height: 4,
+            },
+            shadowOpacity: 0.23,
+            shadowRadius: 2.62,
+            elevation: 4,
+            width: 'auto',
         },
-        shadowOpacity: 0.23,
-        shadowRadius: 2.62,
-
-        elevation: 4,
-    },
-    textStyle: {
-        textAlign: 'center',
-        color: color.whiteText,
-        fontWeight: 'bold'
-    },
-    activeDateTextStyle: {
-        color: theme.palette.primary.main
-    },
-    activeDateContainer: {
-        backgroundColor: theme.palette.primary.contrastText,
-        borderRadius: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-        alignSelf: 'center',
-        width: 30,
-        height: 30,
-        marginBottom: 8
-    },
-    dayContainer: {
-        marginBottom: 15
-    }
-});
+        textStyle: {
+            textAlign: 'center',
+            color: colors.white,
+            fontWeight: 'bold'
+        },
+        activeDateTextStyle: {
+            color: colors.primary.main
+        },
+        activeDateContainer: {
+            backgroundColor: colors.textPrimary,
+            borderRadius: 8,
+            justifyContent: 'center',
+            alignItems: 'center',
+            alignSelf: 'center',
+            width: 30,
+            height: 30,
+            marginBottom: 0
+        },
+        dayContainer: {
+            marginBottom: 10
+        }
+    });
 
 export default calendarHeader;

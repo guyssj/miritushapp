@@ -9,7 +9,6 @@ const services = {
             const response = await api.get(url);
             return response.data;
         } catch (error) {
-
             throw error;
         }
     }

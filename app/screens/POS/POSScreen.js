@@ -1,41 +1,22 @@
-import { ActivityIndicator, Alert, Text, View } from "react-native"
+import { ActivityIndicator, Alert, StyleSheet, Text, View } from "react-native"
 import React, { useEffect, useState } from "react"
-import { useTheme } from "../../theme";
 import { ItemsList } from "../../components/Items";
 import { ProductsList } from "../../components/Products";
 import { Button } from "../../components";
-import { useMutation, useQuery } from "react-query";
 import api from '../../api';
-import { useDispatch } from "react-redux";
-import { userSignInSet } from "../../store/reducers/user";
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import useStyles from "../../theme/useStyles";
+import { t } from "i18next";
 
 
 const POSScreen = ({ route, navigation }) => {
     const { serviceType, customerId, bookId } = route.params;
-    const theme = useTheme();
-    const [transactionsItems, setTransactionsItems] = useState([])
-    const [recipintPay, setRecipintPay] = useState(false)
-    const dispatch = useDispatch();
-    const mutationSaveItems = useMutation(api.transactions.saveItems, {
-        onSuccess: (data) => {
-            Alert.alert("Done", "Pay");
-            setRecipintPay(true)
-        }
-    })
-    const mutationSave = useMutation(api.transactions.save, {
-        onSuccess: (data) => {
-            saveItems(data.id)
-        }
-    })
+    const [transactionsItems, setTransactionsItems] = useState([]);
+    const [recipintPay, setRecipintPay] = useState(false);
+    const { mutate: mutationSaveItems, isLoading: saveItemsLoading } = api.transactionsQuery.useSaveTransactionItems();
+    const { mutate: saveTransaction } = api.transactionsQuery.useSaveTransaction();
+    const { isLoading: productsLoader, isError: productsError, data: products } = api.productsQuery.useGetProducts();
 
-    const { isLoading, isError, data, error, isFetching } = useQuery("products", () => api.products.getAll(), {
-        onError: async (error) => {
-            error.status === 401 ? dispatch(userSignInSet(false)) : null;
-            await AsyncStorage.removeItem('accessToken')
-        }
-    })
+    const { colors, styles } = useStyles(createStyles);
 
     useEffect(() => {
         if (transactionsItems.length == 0) {
@@ -52,7 +33,11 @@ const POSScreen = ({ route, navigation }) => {
     }, [serviceType])
 
     const handleSaveAll = () => {
-        mutationSave.mutate({ customerId, bookId })
+        saveTransaction({ customerId, bookId }, {
+            onSuccess: (data) => {
+                saveItems(data.id)
+            }
+        })
     }
 
     const saveItems = (transactionId) => {
@@ -65,62 +50,93 @@ const POSScreen = ({ route, navigation }) => {
                 price: item.price
             }
         })
-        mutationSaveItems.mutate(saveditems)
+        mutationSaveItems(saveditems, {
+            onSuccess: () => {
+                Alert.alert("Done", "Pay");
+                setRecipintPay(true)
+            }
+        })
     }
     const handlePressItem = (item) => {
-        // console.log(transactionsItems)
-        const pos = transactionsItems.map(tItem => tItem.key).indexOf(`${item.id}_product`);
-        if (pos > -1) {
-            const newObjArr = transactionsItems.map(tItem => {
-                if ([`${item.id}_product`].includes(tItem.key)) {
-                    const newQuantity = tItem.quantity + 1
-                    return { ...tItem, quantity: newQuantity, price: item.price * newQuantity }
-                }
-                return tItem
-            })
-            setTransactionsItems(newObjArr);
+        const key = `${item.id}_product`;
+        const index = transactionsItems.findIndex(tItem => tItem.key === key);
+
+        if (index !== -1) {
+            const updatedItems = [...transactionsItems];
+            const existingItem = updatedItems[index];
+            const newQuantity = existingItem.quantity + 1;
+
+            updatedItems[index] = {
+                ...existingItem,
+                quantity: newQuantity,
+                price: item.price * newQuantity
+            };
+
+            setTransactionsItems(updatedItems);
+            return;
         }
-        else {
-            setTransactionsItems([...transactionsItems, {
-                key: `${item.id}_product`,
-                id: item.id,
-                name: item.name,
-                type: 0,
-                quantity: 1,
-                subtitle: item.description,
-                price: item.price
-            }])
-        }
-    }
+
+        const newItem = {
+            key,
+            id: item.id,
+            name: item.name,
+            type: 0,
+            quantity: 1,
+            subtitle: item.description,
+            price: item.price
+        };
+
+        setTransactionsItems([...transactionsItems, newItem]);
+    };
 
     const onPressDelete = (index) => {
-        console.log(transactionsItems)
-        console.log("your delete index: " + index)
-        const removedTrans = transactionsItems;
-        removedTrans.splice(index, 1);
-        console.log(removedTrans)
-        setTransactionsItems(prev => ([...removedTrans]));
-    }
+        setTransactionsItems(prev => prev.filter((_, i) => i !== index));
+    };
 
-    if (isLoading) {
-        return (<View style={{ flex: 1, justifyContent: 'center' }}><ActivityIndicator /></View>)
-    }
-    if (isError) {
-        return (<View style={{ flex: 1, justifyContent: 'center' }}><ActivityIndicator /><Text>Error</Text></View>)
-    }
+    if (productsLoader)
+        return <View style={styles.posContainer}><ActivityIndicator /></View>
+
+    if (productsError)
+        return <View style={styles.posContainer}><ActivityIndicator /><Text>Error</Text></View>
+
 
 
     return (
-        <View style={{ flex: 1, justifyContent: 'center', backgroundColor: '#FFFAF6' }}>
+        <View style={styles.posContainer}>
             <ItemsList onPressRight={onPressDelete} items={transactionsItems} />
             <View style={{ alignItems: 'center' }}>
-                <ProductsList onPress={handlePressItem} items={data} />
-                {!recipintPay && <Button loading={mutationSaveItems.isLoading} onPress={handleSaveAll} style={{ width: '90%' }} title={'יצירה חשבונית ' + transactionsItems.reduce((a, b) => a + (b['price'] || 0), 0) + '₪'}></Button>}
-                {recipintPay && <Button style={{ width: '90%' }} disabled={true} title={'שולם'} />}
+                <ProductsList onPress={handlePressItem} items={products} />
+                <View style={{ width: '100%', padding: 15 }}>
+                    <Button
+                        disabled={recipintPay}
+                        style={styles.payButton}
+                        loading={saveItemsLoading}
+                        onPress={handleSaveAll}
+                        title={
+                            recipintPay
+                                ? t('detailsScreen.paid')
+                                : t('confirmPayment', { amount: transactionsItems.reduce((total, item) => total + (item.price || 0), 0) })
+                        }
+                    />
+                </View>
             </View>
         </View>
 
     )
 }
+
+const createStyles = (colors, spacing) =>
+    StyleSheet.create({
+        payButton: {
+            shadowColor: 'rgba(0, 0, 0, 0.55)',
+            padding: spacing[4],
+            borderRadius: spacing[2],
+            alignItems: 'center'
+        },
+        posContainer: {
+            flex: 1,
+            justifyContent: 'center'
+        }
+    });
 
 export default POSScreen;

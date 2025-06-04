@@ -1,37 +1,33 @@
 import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
 import { format } from 'date-fns'
-import { useTheme } from '../../theme'
+import useStyles from '../../theme/useStyles'
+import Typography from '../Typography/Typography'
 
 const TimelineDetail = ({ rowData, sectionID, rowID }) => {
-    const theme = useTheme()
-
+    const { colors, styles } = useStyles(createStyles)
     return (
-        <View style={{ flex: 1, marginTop: -10 }}>
-            <Text style={{ color: theme.palette.primary.main, padding: 2 }}>
+        <View style={{ flex: 1, marginTop: -12 }}>
+            <Typography style={{ color: colors.primary.main }}>
                 {format(new Date(rowData.createdDate), "dd MMMM yyyy")}
-            </Text>
-            <View style={{
-                backgroundColor: theme.palette.primary[50],
-                borderRadius: 8,
-                marginBottom: 10
-            }}>
-                <View style={[styles.lineContainer, { backgroundColor: theme.palette.primary.main }]}></View>
+            </Typography>
+            <View style={styles.timeLineCardContainer}>
+                <View style={styles.lineContainer}></View>
                 <View style={styles.eventContainer}>
                     <View style={styles.timeAndTypeContainer}>
-                        <Text style={[styles.timeText, { color: theme.palette.primary.main }]}> {format(new Date(rowData.createdDate), "HH:MM:ss")}</Text>
+                        <Typography style={styles.timeText}> {format(new Date(rowData.createdDate), "HH:MM:ss")}</Typography>
                         <View style={styles.typeContainer}>
-                            <View style={[styles.typeCircleDot, { backgroundColor: theme.palette.primary.main }]}></View>
-                            <Text>{rowData.type}</Text>
+                            <View style={styles.typeCircleDot}></View>
+                            <Typography variant='caption'>{rowData.type}</Typography>
                         </View>
                     </View>
                     <View style={{ marginBottom: 20 }} >
-                        <Text style={{ fontSize: 18, fontWeight: '700' }}>{rowData.description}</Text>
+                        <Typography>{rowData.description}</Typography>
                     </View>
                     <View style={{ flex: 1 }}>
-                        <Text>
+                        <Typography>
                             {rowData.notes}
-                        </Text>
+                        </Typography>
                     </View>
                 </View>
             </View>
@@ -39,39 +35,48 @@ const TimelineDetail = ({ rowData, sectionID, rowID }) => {
     )
 }
 
-const styles = StyleSheet.create({
-    lineContainer: {
-        position: 'absolute',
-        height: '90%',
-        width: '1%',
-        borderRadius: 8,
-        margin: 5
-    },
-    eventContainer: {
-        padding: 20
-    },
-    timeAndTypeContainer: {
-        justifyContent: 'space-between',
-        flexDirection: 'row'
-    },
-    timeText: {
-        fontSize: 17
-    },
-    typeContainer: {
-        backgroundColor: 'white',
-        borderRadius: 6,
-        padding: 5,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    typeCircleDot: {
-        width: 7,
-        height: 7,
-        marginRight: 5,
-        borderRadius: 50
-    }
-});
+const createStyles = (colors, spacing) =>
+    StyleSheet.create({
+        lineContainer: {
+            position: 'absolute',
+            height: '90%',
+            width: '1%',
+            borderRadius: spacing[3],
+            margin: spacing[2],
+            backgroundColor: colors.primary.main
+        },
+        timeLineCardContainer: {
+            backgroundColor: colors.primary[50],
+            borderRadius: spacing[3],
+            marginBottom: spacing[2]
+        },
+        eventContainer: {
+            padding: spacing[4]
+        },
+        timeAndTypeContainer: {
+            justifyContent: 'space-between',
+            flexDirection: 'row'
+        },
+        timeText: {
+            fontSize: 18,
+            color: colors.primary.main
+        },
+        typeContainer: {
+            backgroundColor: 'white',
+            borderRadius: spacing[2],
+            padding: spacing[2],
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center'
+        },
+        typeCircleDot: {
+            backgroundColor: colors.primary.main,
+            width: 7,
+            height: 7,
+            marginEnd: spacing[1],
+            borderRadius: 50
+        }
+    });
 
 
 export default TimelineDetail;

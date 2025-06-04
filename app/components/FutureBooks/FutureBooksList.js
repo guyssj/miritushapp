@@ -1,13 +1,16 @@
-import { View, Text, VirtualizedList, Animated } from 'react-native'
+import { View, VirtualizedList } from 'react-native'
 import React from 'react'
 import FutureBookItem from './FutureBookItem'
+import Typography from '../Typography/Typography';
+import { useTranslation } from 'react-i18next';
+import useSpacing from '../../theme/useSpacing';
 
 const FutureBooksList = ({ items, onItemPressCancel }) => {
-    const scrollX = React.useRef(new Animated.Value(0)).current;
-
+    const { spacing } = useSpacing();
+    const { t } = useTranslation();
     return (
-        <View>
-            <Text style={{ fontSize: 18, fontWeight: '700' }}>Future books:</Text>
+        <View style={{ marginStart: spacing[5], marginEnd: spacing[4] }}>
+            <Typography variant='h4'>{t('customersScreen.customerDetailsModal.futureBooks')}</Typography>
             <VirtualizedList
                 keyExtractor={item => item.id.toString()}
                 data={items}
@@ -18,7 +21,7 @@ const FutureBooksList = ({ items, onItemPressCancel }) => {
                 getItemCount={data => data.length | 0}
                 getItem={(data, index) => data[index]}
                 renderItem={({ item, index }) => <FutureBookItem onItemPressCancel={() => onItemPressCancel(item)} item={item} />}
-                ListEmptyComponent={() => <View style={{ alignItems: 'center' }}><Text style={{ textAlign: 'center' }}>No future books</Text></View>}
+                ListEmptyComponent={() => <View><Typography>{t('customersScreen.customerDetailsModal.noFutureBooks')}</Typography></View>}
             />
         </View>
     )

@@ -1,0 +1,80 @@
+{
+    "welcome": "ברוך הבא",
+    "language": "שפה",
+    "choose_language": "בחר את השפה שלך",
+    "reschdule": "שינוי מועד",
+    "delete": "מחק/י",
+    "confirmPayment": "אישור תשלום - {{amount}}₪",
+    "homeScreen": {
+        "title": "בית"
+    },
+    "calendarScreen": {
+        "title": "יומן"
+    },
+    "settingsScreen": {
+        "title": "הגדרות",
+        "language_label": "שפת האפליקציה"
+    },
+    "loginScreen": {
+        "title": "היי! התגעגענו אליך.",
+        "subtitle": "התחבר/י כדי להמשיך",
+        "labelUsername": "שם משתמש",
+        "labelPassword": "סיסמא",
+        "signInBtn": "התחבר/י",
+        "invalidUserNamePassword": "משהו לא הסתדר עם שם המשתמש או הסיסמה. שווה לבדוק שוב :)"
+    },
+    "alertBeforeCancel": {
+        "title": "אישור ביטול הפגישה",
+        "cancelingMessage": "ביטול הפעולה ימחק את פרטי הפגישה.\nהאם את/ה בטוח/ה שברצונך להמשיך?",
+        "noButton": "לא",
+        "yesButton": "כן"
+    },
+    "customersScreen": {
+        "title": "לקוחות",
+        "addCustomerTitle": "הוסף לקוח חדש",
+        "addCustomerSubTitle": "מלא את הפרטים הבסיסיים כדי להוסיף לקוח למערכת",
+        "customerDetailsTitle": "פרטי לקוח",
+        "newCustomerModal": {
+            "labelFirstName": "שם פרטי",
+            "labelLastName": "שם משפחה",
+            "labelPhoneNumber": "מספר טלפון"
+        },
+        "customerDetailsModal": {
+            "noFutureBooks": "אין פגישות עתידיות ללקוח",
+            "subtitleBasic": "מידע בסיסי והפגישות הקרובות",
+            "futureBooks": "פגישות עתידיות",
+            "labelCustomerName": "שם הלקוח",
+            "labelPhoneNumber": "מספר טלפון",
+            "labelUpcomingBook": "פגישות קרובות",
+            "labelAwatingto": "ממתין לאישור"
+        }
+    },
+    "closeDaysScreen": {
+        "title": "ניהול ימים סגורים",
+        "navTitle": "ימים סגורים",
+        "addCloseDayTitle": "הוספת יום סגור",
+        "addNewCloseDay": "הוספת יום סגור",
+        "addNewCloseDaySubTitle": "חסום יום ביומן כדי למנוע קביעת פגישות בתאריך זה.",
+        "blockOffDay": "יום לחסום",
+        "selectAdate": "לחץ כאן לבחור תאריך",
+        "notes": "הערות",
+        "saveValidation": "אנא בחר תאריך לסגירה"
+    },
+    "detailsScreen": {
+        "title": "פרטי פגישה",
+        "appointmentDetails": "פרטי פגישה",
+        "arrived": "מגיע/ה לפגישה",
+        "notArrived": "לא מגיע/ה לפגישה",
+        "date": "תאריך",
+        "time": "שעה",
+        "service": "שירות",
+        "totalPrice": "מחיר סופי",
+        "paid": "שולם",
+        "finishAndPay": "סיום וגבית תשלום",
+        "actionsButtons": {
+            "cancelBook": "ביטול פגישה",
+            "selectNoShow": "לא הגיע/ה",
+            "purchases": "רכישות"
+        }
+    }
+}

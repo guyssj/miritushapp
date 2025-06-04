@@ -1,24 +1,27 @@
 import React from "react"
-import { TouchableOpacity, View } from "react-native";
-import Icons from 'react-native-vector-icons/Ionicons';
-import { color, useTheme } from "../../theme";
-import { Button, ListItem, Avatar, Badge } from "@rneui/themed";
-import { Image } from "react-native";
-import Animated, { Layout, LightSpeedInRight, LightSpeedOutLeft } from "react-native-reanimated";
+import { I18nManager, TouchableHighlight, View } from "react-native";
+import { Button, ListItem, Avatar } from "@rneui/themed";
+import Animated, { LinearTransition, LightSpeedInRight, LightSpeedOutLeft } from "react-native-reanimated";
 import { getInitials } from "../../shared/utilsFuncations";
+import useColors from "../../theme/useColors";
+import { typography } from "../../theme";
+import Typography from "../Typography/Typography";
 
 
+//TODO: Change to styles not in line
 const CustomerItem = ({ item, onPressRight, onItemPress, onPressLeft, ...props }) => {
-    const theme = useTheme();
+    const { colors } = useColors();
     return (
-        <Animated.View entering={LightSpeedInRight} exiting={LightSpeedOutLeft} layout={Layout.springify()}>
+        <Animated.View entering={LightSpeedInRight} exiting={LightSpeedOutLeft} layout={LinearTransition}>
             <ListItem.Swipeable
-                containerStyle={{ width: '100%', alignItems: 'flex-end', maxHeight: 100, borderBottomWidth: 1, borderBottomColor: '#e7ebf3' }}
+                bottomDivider
+                i18nIsDynamicList
+                Component={TouchableHighlight}
                 leftWidth={80}
                 rightWidth={100}
                 onPress={onItemPress}
-                rightContent={(reset) => (
-                    <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                leftContent={(reset) => (
+                    <View key={item.id.toString()} style={{ flexDirection: 'row', justifyContent: 'center' }}>
                         <Button
                             title="Delete"
                             onPress={() => { onPressRight(); reset(); }}
@@ -27,23 +30,36 @@ const CustomerItem = ({ item, onPressRight, onItemPress, onPressLeft, ...props }
                         ></Button>
                     </View>
                 )}
+                rightContent={(reset) => (
+                    <View style={{ flexDirection: 'row', justifyContent: 'center' }}>
+                        <Button
+                            title="Delete"
+                            onPress={() => { onPressRight(); reset(); }}
+                            icon={{ name: 'delete', color: 'white' }}
+                            buttonStyle={{ minHeight: '100%', minWidth: '40%', backgroundColor: 'red' }}
+                        />
+                    </View>
+                )}
                 minSlideWidth={40}
             >
                 <ListItem.Content style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'flex-start' }}>
                     <Avatar size={50}
                         rounded
                         title={getInitials(`${item.firstName} ${item.lastName}`)}
-                        containerStyle={{ backgroundColor: theme.palette.primary.main, marginRight: 20 }} />
+                        containerStyle={{ backgroundColor: colors.primary.main, marginRight: 20 }} />
                     <View style={{ flexDirection: 'row' }}>
                         <View style={{ alignItems: 'flex-start' }}>
-                            <ListItem.Title style={{ fontSize: 18, fontWeight: '300' }}>{`${item.firstName} ${item.lastName}`}</ListItem.Title>
-                            {item.phoneNumber && <ListItem.Subtitle style={{ color: '#033a73' }}>{item.phoneNumber}</ListItem.Subtitle>}
+                            <ListItem.Title style={{ ...typography.body, fontSize: 18 }}>{`${item.firstName} ${item.lastName}`}</ListItem.Title>
+                            {item.phoneNumber && <ListItem.Subtitle style={{ ...typography.subtitle, fontSize: 16, color: '#033a73' }}>{item.phoneNumber}</ListItem.Subtitle>}
                         </View>
                     </View>
                 </ListItem.Content>
-                <ListItem.Chevron size={25} />
-                {/* <ListItem.Chevron iconStyle={{ transform: [{ rotate: '180deg' }] }} size={25} /> */}
-
+                <ListItem.Chevron
+                    i18nIsDynamicList
+                    iconStyle={{ transform: [{ scaleX: I18nManager.isRTL ? -1 : 1 }] }}
+                    size={25}
+                />
+                <Typography variant="body">{I18nManager.isRTL.toString()}</Typography>
             </ListItem.Swipeable>
         </Animated.View>
     )

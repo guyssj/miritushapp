@@ -1,7 +1,6 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import HomeScreen from '../screens/HomeScreen';
-import { CloseButton } from '../components';
 import POSs from './POSStack';
 
 const HomeStack = createNativeStackNavigator();
@@ -14,11 +13,9 @@ const HomeStuck = () => {
                 <HomeStack.Screen name="Overview" component={HomeScreen} />
                 <HomeStack.Screen name="POS" component={POSs} />
             </HomeStack.Group>
-            <HomeStack.Group screenOptions={{ presentation: 'modal', headerShown: false }}>
-            </HomeStack.Group>
-
         </HomeStack.Navigator>
     );
-}
+};
+
 
 export default HomeStuck;

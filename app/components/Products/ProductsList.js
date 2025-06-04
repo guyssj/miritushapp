@@ -1,7 +1,7 @@
 import React from "react"
-import { ActivityIndicator, View, VirtualizedList } from "react-native";
-import { useTheme } from "../../theme";
+import { ActivityIndicator, Text, View, VirtualizedList } from "react-native";
 import ProductItem from './ProductItem';
+import Typography from "../Typography/Typography";
 
 const ProductsList = ({ onPress, items, ...props }) => {
     return (
@@ -13,7 +13,7 @@ const ProductsList = ({ onPress, items, ...props }) => {
             getItemCount={data => data.length | 0}
             getItem={(data, index) => data[index]}
             renderItem={({ item, index }) => <ProductItem onPress={() => onPress(item, index)} item={item} />}
-            ListEmptyComponent={() => <ActivityIndicator size='large' />}
+            ListEmptyComponent={() => <View><Typography>No items in the cart</Typography></View>}
         />
     )
 }

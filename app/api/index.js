@@ -1,21 +1,25 @@
 import services from './services';
-import users from './users';
+import users, { usersQuery } from './users';
 import calendar from './calendar';
-import customers from './customer';
-import transactions from './transactions';
-import products from './products';
-import serviceTypes from './serviceTypes';
-
-
-
+import { calendarQuery } from './calendar'
+import customers, { customerQuery } from './customer';
+import transactions, { transactionsQuery } from './transactions';
+import products, { productsQuery } from './products';
+import serviceTypes, { serviceTypesQuery } from './serviceTypes';
 
 
 export default {
+    calendarQuery,
     services,
     users,
+    usersQuery,
     calendar,
     customers,
+    customerQuery,
+    serviceTypesQuery,
     transactions,
+    transactionsQuery,
     products,
+    productsQuery,
     serviceTypes
 };

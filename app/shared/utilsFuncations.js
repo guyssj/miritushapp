@@ -46,7 +46,6 @@ export function minToTime(value) {
 }
 
 export function shadeColor(color, percent, transpert) {
-
     var R = parseInt(color.substring(1, 3), 16);
     var G = parseInt(color.substring(3, 5), 16);
     var B = parseInt(color.substring(5, 7), 16);
@@ -63,6 +62,31 @@ export function shadeColor(color, percent, transpert) {
     var GG = ((G.toString(16).length == 1) ? "0" + G.toString(16) : G.toString(16));
     var BB = ((B.toString(16).length == 1) ? "0" + B.toString(16) : B.toString(16));
     if (transpert)
-        return "#" + RR + GG + BB + "80"
+        return "#" + RR + GG + BB + "30"
     return "#" + RR + GG + BB;
+}
+
+/**
+ *  Convet hex color to rgba
+ * @param {string} hex - Hex Color
+ * @param {number} alpha 
+ * @returns 
+ */
+export function hexToRgba(hex, alpha) {
+
+    // Remove # if present
+    hex = hex.replace(/^#/, '');
+
+    // Expand shorthand hex (#fff => #ffffff)
+    if (hex.length === 3) {
+        hex = hex.split('').map(char => char + char).join('');
+    }
+
+    // Convert to integer values
+    const bigint = parseInt(hex, 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
 }

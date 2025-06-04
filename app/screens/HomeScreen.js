@@ -7,6 +7,7 @@ import { ExpandableCalendar, Agenda, AgendaList, CalendarProvider, WeekCalendar 
 import { useCallback, useMemo } from 'react';
 import { setConnection } from '../store/reducers/signalrConnection';
 import { HubConnectionBuilder } from '@microsoft/signalr';
+import { userSignInSet } from '../store/reducers/user';
 
 
 const today = new Date().toISOString().split('T')[0];
@@ -37,7 +38,6 @@ function getPastDate(numberOfDays) {
 
 const HomeScreen = ({ navigation }) => {
     const dispatch = useDispatch();
-
     const renderItem = (reservation, isFirst) => {
         const fontSize = isFirst ? 16 : 14;
         const color = isFirst ? 'black' : '#43515c';

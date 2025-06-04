@@ -1,0 +1,80 @@
+{
+    "welcome": "Welcome",
+    "language": "Language",
+    "choose_language": "Choose your language",
+    "reschdule": "Reschdule",
+    "delete": "Delete",
+    "confirmPayment": "Confirm Payment - {{amount}}$",
+    "homeScreen": {
+        "title": "Home"
+    },
+    "calendarScreen": {
+        "title": "Calendar"
+    },
+    "settingsScreen": {
+        "title": "Settings",
+        "language_label": "App Language"
+    },
+    "loginScreen": {
+        "title": "Log in to continue",
+        "subtitle": "Hey there! We missed you.",
+        "labelUsername": "User name",
+        "labelPassword": "Password",
+        "signInBtn": "Sign in",
+        "invalidUserNamePassword": "Hmm, something didn’t match with your username or password. Worth checking again :)"
+    },
+    "alertBeforeCancel": {
+        "title": "Confirm Meeting Cancellation",
+        "cancelingMessage": "Cancelling will delete the meeting details.\nAre you sure you want to proceed?",
+        "noButton": "Go Back",
+        "yesButton": "Confirm Cancellation"
+    },
+    "customersScreen": {
+        "title": "Customers",
+        "addCustomerTitle": "Add a new customer",
+        "addCustomerSubTitle": "Fill in the basic details to add a customer to the system",
+        "customerDetailsTitle": "Customer Details",
+        "newCustomerModal": {
+            "labelFirstName": "First name",
+            "labelLastName": "Last name",
+            "labelPhoneNumber": "Phone number"
+        },
+        "customerDetailsModal": {
+            "noFutureBooks": "No future books for customer",
+            "subtitleBasic": "Basic info and upcoming appointments",
+            "futureBooks": "Future Books",
+            "labelCustomerName": "Customer name",
+            "labelPhoneNumber": "Phone number",
+            "labelUpcomingBook": "Upcomming Appointments",
+            "labelAwatingto": "Awaiting approval"
+        }
+    },
+    "closeDaysScreen": {
+        "title": "Managing Closed Days",
+        "navTitle": "Closed Days",
+        "addCloseDayTitle": "Add Closed Day",
+        "addNewCloseDay": "Add a New Closed Day",
+        "addNewCloseDaySubTitle": "Block off a day when no meetings should be scheduled",
+        "blockOffDay": "Block off day",
+        "selectAdate": "Click here to select a date",
+        "notes": "Notes",
+        "saveValidation": "Please choose a date"
+    },
+    "detailsScreen": {
+        "title": "Details",
+        "appointmentDetails": "Appointment Details",
+        "arrived": "Will attend appointment",
+        "notArrived": "Won’t attend appointment",
+        "date": "Date",
+        "time": "Time",
+        "service": "Service",
+        "totalPrice": "Total Price",
+        "paid": "Paid",
+        "finishAndPay": "Finish & Pay",
+        "actionsButtons": {
+            "cancelBook": "Cancel Book",
+            "selectNoShow": "No show",
+            "purchases": "Purchases"
+        }
+    }
+}

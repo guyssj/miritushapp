@@ -1,5 +1,46 @@
+import { useMutation, useQuery } from 'react-query';
 import api from './api';
 
+export const calendarQuery = {
+    /**
+     * Get all close days
+     */
+    useGetAllCloseDays(onSuccess = null) {
+        return useQuery("close-days", async () => await calendar.getAllCloseDays(), {
+            onSuccess: onSuccess
+        })
+    },
+    useDeleteCloseDay() {
+        return useMutation(id => {
+            return calendar.deleteCloseDay(id)
+        })
+    },
+    useSaveCloseDay() {
+        return useMutation(closeDay => {
+            return calendar.saveCloseDay(closeDay)
+        })
+    },
+    useCancelBook() {
+        return useMutation(bookId => {
+            return calendar.cancelBook(bookId)
+        })
+    },
+    useGetAllEvents(onSuccess) {
+        return useQuery("events", async () => await calendar.getAll(), {
+            onSuccess: onSuccess
+        })
+    },
+    useGetAllLockHours(onSuccess) {
+        return useQuery("lockHours", async () => await calendar.getAllLockHours(), {
+            onSuccess: onSuccess
+        })
+    },
+    useGetTransactionByBook(bookId, onError) {
+        return useQuery(['transaction', bookId], async () => await calendar.getTransactionByBook(bookId), {
+            onError: onError
+        })
+    }
+}
 
 const calendar = {
     getAll: async () => {

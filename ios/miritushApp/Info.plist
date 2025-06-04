@@ -17,20 +17,26 @@
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
-	<string>1.0</string>
+	<string>$(MARKETING_VERSION)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
-	<string>1</string>
+	<string>$(CURRENT_PROJECT_VERSION)</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		<key>NSAllowsLocalNetworking</key>
+		<true/>
 		<key>NSExceptionDomains</key>
 		<dict>
-			<key>localhost</key>
+			<key>localhost:7248</key>
 			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
+				<key>NSIncludesSubdomains</key>
+				<true/>
+				<key>NSTemporaryExceptionAllowsInsecureHTTPLoads</key>
 				<true/>
 			</dict>
 		</dict>
@@ -41,7 +47,7 @@
 	<string>LaunchScreen</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
-		<string>armv7</string>
+		<string>arm64</string>
 	</array>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
@@ -51,6 +57,23 @@
 	</array>
 	<key>UIAppFonts</key>
 	<array>
+		<string>Poppins-Bold.ttf</string>
+		<string>Poppins-BoldItalic.ttf</string>
+		<string>Poppins-Light.ttf</string>
+		<string>Poppins-Regular.ttf</string>
+        <string>NotoSansHebrew-Bold.ttf</string>
+        <string>NotoSansHebrew-ExtraLight.ttf</string>
+        <string>NotoSansHebrew-Light.ttf</string>
+        <string>NotoSansHebrew-Regular.ttf</string>
+        <string>NotoSansHebrew-SemiBold.ttf</string>
+        <string>NotoSans-Bold.ttf</string>
+        <string>NotoSans-ExtraLight.ttf</string>
+        <string>NotoSans-Light.ttf</string>
+        <string>NotoSans-Regular.ttf</string>
+        <string>NotoSans-SemiBold.ttf</string>
+        <string>NotoSans-Thin.ttf</string>
+        <string>NotoSans-ExtraBold.ttf</string>
+        <string>NotoSans-ExtraBoldItalic.ttf</string>
 		<string>AntDesign.ttf</string>
 		<string>Entypo.ttf</string>
 		<string>EvilIcons.ttf</string>

@@ -1,5 +1,22 @@
+import { useMutation, useQuery } from 'react-query';
 import api from './api';
 
+export const transactionsQuery = {
+    useSaveTransactionItems() {
+        return useMutation(items => {
+            return transactions.saveItems(items);
+        })
+    },
+    useGetAllCustomers() {
+        return useQuery("products", () => products.getAll())
+    },
+
+    useSaveTransaction() {
+        return useMutation(transaction => {
+            return transactions.save(transaction)
+        })
+    }
+}
 
 const transactions = {
     getAll: async () => {
